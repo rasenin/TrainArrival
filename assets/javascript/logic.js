@@ -24,7 +24,7 @@ $("#add-train").on("click", function() {
     .trim();
   frequency = $("#frequencyInput")
     .val()
-    .trim(); 
+    .trim();
 
   let firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
 
@@ -38,7 +38,9 @@ $("#add-train").on("click", function() {
   let tMinutesTillTrain = parseInt(frequency) - tRemainder;
 
   // Next Train
-  let nextTrain = moment().add(tMinutesTillTrain, "minutes");
+  let nextTrain = moment()
+    .add(tMinutesTillTrain, "minutes")
+    .format("LT");
 
   firebase
     .database()
@@ -52,26 +54,29 @@ $("#add-train").on("click", function() {
     });
 });
 
-firebase.database().ref().on(
-  "child_added",
-  function(snapshot) {
-    let tableRow = $("<tr>");
+firebase
+  .database()
+  .ref()
+  .on(
+    "child_added",
+    function(snapshot) {
+      let tableRow = $("<tr>");
 
-    let nameField = $("<td>").text(snapshot.val().trainName);
-    let destinationField = $("<td>").text(snapshot.val().destination);
-    let frequencyField = $("<td>").text(snapshot.val().frequency);
-    let arrivalTimeField = $("<td>").text(snapshot.val().arrivalTime);
-    let minutesTillField = $("<td>").text(snapshot.val().minutesTill);
+      let nameField = $("<td>").text(snapshot.val().trainName);
+      let destinationField = $("<td>").text(snapshot.val().destination);
+      let frequencyField = $("<td>").text(snapshot.val().frequency);
+      let arrivalTimeField = $("<td>").text(snapshot.val().arrivalTime);
+      let minutesTillField = $("<td>").text(snapshot.val().minutesTill);
 
-    tableRow.append(nameField);
-    tableRow.append(destinationField);
-    tableRow.append(frequencyField);
-    tableRow.append(arrivalTimeField);
-    tableRow.append(minutesTillField);
+      tableRow.append(nameField);
+      tableRow.append(destinationField);
+      tableRow.append(frequencyField);
+      tableRow.append(arrivalTimeField);
+      tableRow.append(minutesTillField);
 
-    $("#train-info").append(tableRow);
-  }, // Handle the errors
-  function(errorObject) {
-    console.log("Errors handled: " + errorObject.code);
-  }
-);
+      $("#train-info").append(tableRow);
+    }, // Handle the errors
+    function(errorObject) {
+      console.log("Errors handled: " + errorObject.code);
+    }
+  );
