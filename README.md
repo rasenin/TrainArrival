@@ -9,4 +9,4 @@ This app allows users to enter train information such as the name, destination, 
 * Javascript Moments.js library
 * Firebase
 
-The app can be found at [this link](https://rasenin.github.io/TrainArrival/).
+The app can be found at [this link](https://romansenin.github.io/TrainArrival/).
